@@ -34,6 +34,12 @@ const SCENE_SETTINGS_MENU = "res://src/ui/menus/settings_menu.tscn"
 const SCENE_GAME_OVER = "res://src/ui/screens/game_over.tscn"
 
 # ============================================================================
+# AUDIO PATHS (shared UI SFX, etc.)
+# ============================================================================
+
+const SFX_UI_CLICK = "res://assets/audio/sfx/ui_click.wav"
+
+# ============================================================================
 # NODE GROUPS (for get_tree().get_nodes_in_group())
 # ============================================================================
 

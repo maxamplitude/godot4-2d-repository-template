@@ -182,7 +182,8 @@ func _wait_for_input() -> InputEvent:
 
 
 func _on_back_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	# Apply all settings before closing
 	SettingsManager.apply_all_settings()

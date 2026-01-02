@@ -62,6 +62,21 @@ func _setup_sfx_pool() -> void:
 		_sfx_players.append(player)
 
 
+func _exit_tree() -> void:
+	# Stop all audio and clean up players to prevent shutdown deadlocks
+	if _music_tween:
+		_music_tween.kill()
+	
+	if is_instance_valid(_current_music_player):
+		_current_music_player.stop()
+	if is_instance_valid(_next_music_player):
+		_next_music_player.stop()
+		
+	for player in _sfx_players:
+		if is_instance_valid(player):
+			player.stop()
+
+
 ## Play a sound effect with optional pitch/volume variance
 func play_sfx(stream: AudioStream, variance: bool = true, bus: String = BUS_SFX) -> void:
 	if not stream:

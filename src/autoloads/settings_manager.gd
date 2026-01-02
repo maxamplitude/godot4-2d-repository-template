@@ -41,6 +41,7 @@ signal setting_changed(section: String, key: String, value: Variant)
 
 var _config: ConfigFile
 var _settings_cache: Dictionary = {}
+var _has_warned_display_skip: bool = false
 
 
 func _ready() -> void:
@@ -63,6 +64,13 @@ func load_settings() -> void:
 
 ## Save current settings to disk
 func save_settings() -> void:
+	# CI environments often have restricted user directories which causes hangs on exit
+	if DisplayServer.get_name() == "headless" or OS.has_feature("headless"):
+		return
+
+	if not _config:
+		return
+
 	var err = _config.save(settings_file_path)
 	if err != OK:
 		push_error("SettingsManager: Failed to save settings file")
@@ -128,6 +136,18 @@ func apply_all_settings() -> void:
 
 ## Apply display settings
 func apply_display_settings() -> void:
+	# Skip display changes when running in environments that don't support window control
+	# (embedded run inside the editor or headless CI). Trying to resize/move a window
+	# there produces noisy warnings like "Embedded window can't be resized."
+	var is_headless := OS.has_feature("headless")
+	var is_embedded := Engine.is_embedded_in_editor()
+	if is_headless or is_embedded:
+		if not _has_warned_display_skip:
+			var reason := "headless" if is_headless else "embedded window"
+			push_warning("SettingsManager: Skipping display settings while running in %s mode." % reason)
+			_has_warned_display_skip = true
+		return
+
 	var window_mode = get_setting("display", "window_mode", default_window_mode)
 	var resolution_width = get_setting("display", "resolution_width", default_resolution_width)
 	var resolution_height = get_setting("display", "resolution_height", default_resolution_height)

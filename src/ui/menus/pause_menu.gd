@@ -24,21 +24,24 @@ func _ready() -> void:
 
 
 func _on_resume_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	SceneManager.pop_scene(transition)
 	GameManager.resume_game()
 
 
 func _on_settings_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	# Push settings menu on top of pause menu
 	SceneManager.push_scene(Constants.SCENE_SETTINGS_MENU)
 
 
 func _on_main_menu_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	# Pop pause menu and return to main menu
 	SceneManager.pop_scene(null)  # Remove pause menu instantly

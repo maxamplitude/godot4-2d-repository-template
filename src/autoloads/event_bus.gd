@@ -1,3 +1,4 @@
+@warning_ignore("unused_signal")
 extends Node
 ## Global event bus for decoupled communication between systems
 ##
@@ -8,28 +9,28 @@ extends Node
 # GAME STATE SIGNALS
 # ============================================================================
 
-## Emitted when the game starts (from main menu to gameplay)
+@warning_ignore("unused_signal") ## Emitted when the game starts (from main menu to gameplay)
 signal game_started
 
-## Emitted when the game is paused
+@warning_ignore("unused_signal") ## Emitted when the game is paused
 signal game_paused
 
-## Emitted when the game is resumed from pause
+@warning_ignore("unused_signal") ## Emitted when the game is resumed from pause
 signal game_resumed
 
-## Emitted when the game ends (victory or defeat)
+@warning_ignore("unused_signal") ## Emitted when the game ends (victory or defeat)
 signal game_ended(victory: bool)
 
-## Emitted when returning to main menu
+@warning_ignore("unused_signal") ## Emitted when returning to main menu
 signal returned_to_menu
 
-## Emitted when the current level/stage is completed
+@warning_ignore("unused_signal") ## Emitted when the current level/stage is completed
 signal level_completed
 
-## Emitted when the player fails the level
+@warning_ignore("unused_signal") ## Emitted when the player fails the level
 signal level_failed
 
-## Emitted when restarting the current level
+@warning_ignore("unused_signal") ## Emitted when restarting the current level
 signal level_restarted
 
 
@@ -37,22 +38,22 @@ signal level_restarted
 # PLAYER SIGNALS
 # ============================================================================
 
-## Emitted when player takes damage
+@warning_ignore("unused_signal") ## Emitted when player takes damage
 signal player_damaged(amount: float, source: Node)
 
-## Emitted when player is healed
+@warning_ignore("unused_signal") ## Emitted when player is healed
 signal player_healed(amount: float)
 
-## Emitted when player dies
+@warning_ignore("unused_signal") ## Emitted when player dies
 signal player_died
 
-## Emitted when player respawns
+@warning_ignore("unused_signal") ## Emitted when player respawns
 signal player_respawned
 
-## Emitted when player health changes
+@warning_ignore("unused_signal") ## Emitted when player health changes
 signal player_health_changed(current_health: float, max_health: float)
 
-## Emitted when player gains score/points
+@warning_ignore("unused_signal") ## Emitted when player gains score/points
 signal score_changed(new_score: int, delta: int)
 
 
@@ -60,16 +61,16 @@ signal score_changed(new_score: int, delta: int)
 # COLLECTIBLES & POWERUPS
 # ============================================================================
 
-## Emitted when player collects an item
+@warning_ignore("unused_signal") ## Emitted when player collects an item
 signal item_collected(item_type: String, item_data: Dictionary)
 
-## Emitted when a powerup is activated
+@warning_ignore("unused_signal") ## Emitted when a powerup is activated
 signal powerup_activated(powerup_type: String, duration: float)
 
-## Emitted when a powerup expires
+@warning_ignore("unused_signal") ## Emitted when a powerup expires
 signal powerup_expired(powerup_type: String)
 
-## Emitted when currency/coins are collected
+@warning_ignore("unused_signal") ## Emitted when currency/coins are collected
 signal currency_collected(amount: int)
 
 
@@ -77,19 +78,19 @@ signal currency_collected(amount: int)
 # UI SIGNALS
 # ============================================================================
 
-## Emitted when a UI screen/menu is opened
+@warning_ignore("unused_signal") ## Emitted when a UI screen/menu is opened
 signal ui_screen_opened(screen_name: String)
 
-## Emitted when a UI screen/menu is closed
+@warning_ignore("unused_signal") ## Emitted when a UI screen/menu is closed
 signal ui_screen_closed(screen_name: String)
 
-## Emitted when a button in the UI is pressed
+@warning_ignore("unused_signal") ## Emitted when a button in the UI is pressed
 signal ui_button_pressed(button_name: String)
 
-## Emitted when a dialogue box appears
+@warning_ignore("unused_signal") ## Emitted when a dialogue box appears
 signal dialogue_started(dialogue_id: String)
 
-## Emitted when a dialogue box is closed
+@warning_ignore("unused_signal") ## Emitted when a dialogue box is closed
 signal dialogue_ended(dialogue_id: String)
 
 
@@ -97,16 +98,16 @@ signal dialogue_ended(dialogue_id: String)
 # COMBAT/ACTION SIGNALS
 # ============================================================================
 
-## Emitted when player attacks
+@warning_ignore("unused_signal") ## Emitted when player attacks
 signal player_attacked(target: Node)
 
-## Emitted when an enemy is damaged
+@warning_ignore("unused_signal") ## Emitted when an enemy is damaged
 signal enemy_damaged(enemy: Node, damage: float)
 
-## Emitted when an enemy dies
+@warning_ignore("unused_signal") ## Emitted when an enemy dies
 signal enemy_died(enemy: Node)
 
-## Emitted when an enemy spawns
+@warning_ignore("unused_signal") ## Emitted when an enemy spawns
 signal enemy_spawned(enemy: Node)
 
 
@@ -114,16 +115,16 @@ signal enemy_spawned(enemy: Node)
 # ENVIRONMENT SIGNALS
 # ============================================================================
 
-## Emitted when entering a new area/zone
+@warning_ignore("unused_signal") ## Emitted when entering a new area/zone
 signal area_entered(area_name: String)
 
-## Emitted when leaving an area/zone
+@warning_ignore("unused_signal") ## Emitted when leaving an area/zone
 signal area_exited(area_name: String)
 
-## Emitted when a checkpoint is reached
+@warning_ignore("unused_signal") ## Emitted when a checkpoint is reached
 signal checkpoint_reached(checkpoint_id: String)
 
-## Emitted when an object is destroyed in the environment
+@warning_ignore("unused_signal") ## Emitted when an object is destroyed in the environment
 signal object_destroyed(object: Node)
 
 
@@ -131,16 +132,16 @@ signal object_destroyed(object: Node)
 # ACHIEVEMENT/PROGRESSION SIGNALS
 # ============================================================================
 
-## Emitted when an achievement is unlocked
+@warning_ignore("unused_signal") ## Emitted when an achievement is unlocked
 signal achievement_unlocked(achievement_id: String)
 
-## Emitted when a quest/objective is started
+@warning_ignore("unused_signal") ## Emitted when a quest/objective is started
 signal quest_started(quest_id: String)
 
-## Emitted when a quest/objective is updated
+@warning_ignore("unused_signal") ## Emitted when a quest/objective is updated
 signal quest_updated(quest_id: String, progress: float)
 
-## Emitted when a quest/objective is completed
+@warning_ignore("unused_signal") ## Emitted when a quest/objective is completed
 signal quest_completed(quest_id: String)
 
 
@@ -148,19 +149,16 @@ signal quest_completed(quest_id: String)
 # SAVE/SETTINGS SIGNALS
 # ============================================================================
 
-## Emitted when game is saved
+@warning_ignore("unused_signal") ## Emitted when game is saved
 signal game_saved
 
-## Emitted when game is loaded
+@warning_ignore("unused_signal") ## Emitted when game is loaded
 signal game_loaded
 
-## Emitted when settings are changed
+@warning_ignore("unused_signal") ## Emitted when settings are changed
 signal settings_changed(category: String, key: String, value: Variant)
 
 
-# ============================================================================
-# UTILITY FUNCTIONS
-# ============================================================================
 
 ## Emit a custom event with optional data
 ## Useful for game-specific events not covered by default signals

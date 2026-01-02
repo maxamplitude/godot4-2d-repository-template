@@ -44,7 +44,8 @@ func _on_slider_value_changed(value: float) -> void:
 	
 	# Play a quick sound when adjusting SFX volume
 	if bus_name == "SFX":
-		AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+		if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+			AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 
 
 func _update_value_label(value: float) -> void:

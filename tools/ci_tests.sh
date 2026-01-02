@@ -1,10 +1,21 @@
 #!/bin/sh
 
-# Run the tests
-export GODOT_BIN=$(which godot)
+# CI Test Script
+# Bypasses wrappers to ensure Godot 4 engine flags are in the correct order.
 
-$(dirname $0)/../addons/gdUnit4/runtest.sh -a res://src/tests
+GODOT_BIN=$(which godot)
+export GODOT_BIN
 
-# echo "Copying log..."
-# # Run the copy log command
-# godot --headless --path . --quiet -s res://addons/gdUnit4/bin/GdUnitCopyLog.gd > /dev/null
+BUILD_DIR="$(pwd)/builds"
+LOG_FILE="$BUILD_DIR/godot_log/godot-tests.log"
+USER_DATA_DIR="$BUILD_DIR/user_data"
+
+mkdir -p "$(dirname "$LOG_FILE")" "$USER_DATA_DIR"
+
+echo "Starting Godot Headless Tests..."
+"$(dirname "$0")/../addons/gdUnit4/runtest.sh" --headless -a res://src/tests
+
+
+EXIT_CODE=$?
+echo "Godot process finished with exit code: $EXIT_CODE"
+exit $EXIT_CODE

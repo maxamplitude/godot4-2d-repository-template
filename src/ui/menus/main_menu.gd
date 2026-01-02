@@ -28,7 +28,8 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	if not first_level_scene.is_empty():
 		SceneManager.change_scene(first_level_scene, transition)
@@ -37,12 +38,14 @@ func _on_play_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res://assets/audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	SceneManager.push_scene(Constants.SCENE_SETTINGS_MENU)
 
 
 func _on_quit_pressed() -> void:
-	AudioManager.play_sfx(preload("res://assets/audio/sfx/ui_click.wav")) if ResourceLoader.exists("res:// audio/sfx/ui_click.wav") else null
+	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
+		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
 	
 	get_tree().quit()

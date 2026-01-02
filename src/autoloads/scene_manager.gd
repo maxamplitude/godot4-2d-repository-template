@@ -176,28 +176,26 @@ func is_scene_preloaded(scene_path: String) -> bool:
 
 
 func _perform_scene_change(scene_path: String) -> void:
-	# Unload current scene (unless we're pushing to a stack)
-	if _current_scene and not _skip_current_scene_cleanup:
+	if _current_scene:
 		_current_scene.queue_free()
 		scene_unloaded.emit(_current_scene.scene_file_path)
-	
-	# Load new scene
-	var new_scene: Node
-	if scene_path in _preloaded_scenes:
-		new_scene = _preloaded_scenes[scene_path].instantiate()
-	else:
-		var loaded_resource = load(scene_path)
-		if not loaded_resource:
-			push_error("SceneManager: Failed to load scene '%s'" % scene_path)
-			_is_transitioning = false
-			return
-		new_scene = loaded_resource.instantiate()
-	
+
+	var loaded_resource = _preloaded_scenes.get(scene_path, null)
+	if not loaded_resource:
+		loaded_resource = load(scene_path)
+	if not loaded_resource:
+		push_error("SceneManager: Failed to load scene '%s'" % scene_path)
+		_is_transitioning = false
+		return
+
+	var new_scene = loaded_resource.instantiate()
 	get_tree().root.call_deferred("add_child", new_scene)
-	await get_tree().process_frame  # Wait for scene to be added
-	get_tree().current_scene = new_scene
+	call_deferred("_set_current_scene_deferred", new_scene, scene_path)
 	_current_scene = new_scene
-	
+
+
+func _set_current_scene_deferred(new_scene: Node, scene_path: String) -> void:
+	get_tree().current_scene = new_scene
 	scene_loaded.emit(scene_path)
 
 

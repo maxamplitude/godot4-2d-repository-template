@@ -156,7 +156,7 @@ func _on_game_started() -> void:
 	set_state(Constants.GameState.PLAYING)
 
 
-func _on_game_ended(victory: bool) -> void:
+func _on_game_ended(_victory: bool) -> void:
 	set_state(Constants.GameState.GAME_OVER)
 
 
