@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CircularWipeTransition" load_steps=2 format=3 uid="uid://ccw778s751hsi"]
+
+[ext_resource type="Script" uid="uid://dhhxly1y64qvf" path="res://src/systems/circular_wipe_transition.gd" id="1_qlmc2"]
+
+[resource]
+script = ExtResource("1_qlmc2")
+metadata/_custom_type_script = "uid://dhhxly1y64qvf"

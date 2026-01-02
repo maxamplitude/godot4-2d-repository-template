@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: 4.5.1
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download Godot headless
+        run: |
+          echo "Downloading Godot ${GODOT_VERSION}..."
+          DOWNLOAD_URL="https://downloads.godotengine.org/?version=${GODOT_VERSION}&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          GODOT_ZIP="Godot_v${GODOT_VERSION}-stable_linux.64.zip"
+          EXE_FILE="Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          curl -L -o "$GODOT_ZIP" "$DOWNLOAD_URL"
+          unzip -q "$GODOT_ZIP"
+          chmod +x "${EXE_FILE}"
+          sudo mv "${EXE_FILE}" /usr/local/bin/godot
+          rm -f "$GODOT_ZIP"
+
+      - name: Run gdUnit tests
+        run: |
+          chmod +x ./tools/ci_tests.sh
+          ./tools/ci_tests.sh

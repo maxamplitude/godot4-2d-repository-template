@@ -1,0 +1,16 @@
+
+{
+  "recommendations": [
+    "geequlim.godot-tools",
+    "donjayamanne.githistory",
+    "davidanson.vscode-markdownlint",
+    "foxundermoon.shell-format",
+    "github.copilot",
+    "github.copilot-chat",
+    "github.vscode-pull-request-github",
+    "openai.chatgpt",
+    "timonwong.shellcheck",
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    "visualstudioexptteam.vscodeintellicode",
+  ]
+}

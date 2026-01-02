@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SlideTransition" load_steps=2 format=3 uid="uid://c4fs1q8fenndf"]
+
+[ext_resource type="Script" uid="uid://cqtj05ifbqij0" path="res://src/systems/slide_transition.gd" id="1_7htai"]
+
+[resource]
+script = ExtResource("1_7htai")
+metadata/_custom_type_script = "uid://cqtj05ifbqij0"

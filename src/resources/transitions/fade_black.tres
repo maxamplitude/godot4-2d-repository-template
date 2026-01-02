@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="FadeTransition" load_steps=2 format=3 uid="uid://bclyrkyndoy6e"]
+
+[ext_resource type="Script" uid="uid://xby4ngjh8ef3" path="res://src/systems/fade_transition.gd" id="1_7ffpf"]
+
+[resource]
+script = ExtResource("1_7ffpf")
+metadata/_custom_type_script = "uid://xby4ngjh8ef3"

@@ -1,0 +1,122 @@
+# Default Input Map Configuration
+# Run this script to set up default input actions for your project
+# 
+# To use: Copy this into a tool script or manually add these to Project Settings > Input Map
+
+## Movement Actions
+func setup_movement_inputs() -> void:
+	_add_action_with_keys("move_left", [KEY_A, KEY_LEFT])
+	_add_action_with_keys("move_right", [KEY_D, KEY_RIGHT])
+	_add_action_with_keys("move_up", [KEY_W, KEY_UP])
+	_add_action_with_keys("move_down", [KEY_S, KEY_DOWN])
+	
+	# Gamepad support
+	_add_action_with_joypad_button("move_left", JOY_BUTTON_DPAD_LEFT)
+	_add_action_with_joypad_button("move_right", JOY_BUTTON_DPAD_RIGHT)
+	_add_action_with_joypad_button("move_up", JOY_BUTTON_DPAD_UP)
+	_add_action_with_joypad_button("move_down", JOY_BUTTON_DPAD_DOWN)
+	
+	# Left stick for movement
+	_add_action_with_joypad_axis("move_left", JOY_AXIS_LEFT_X, -1.0)
+	_add_action_with_joypad_axis("move_right", JOY_AXIS_LEFT_X, 1.0)
+	_add_action_with_joypad_axis("move_up", JOY_AXIS_LEFT_Y, -1.0)
+	_add_action_with_joypad_axis("move_down", JOY_AXIS_LEFT_Y, 1.0)
+
+
+## Action Buttons (Jump, Attack, etc.)
+func setup_action_inputs() -> void:
+	_add_action_with_keys("jump", [KEY_SPACE, KEY_W])
+	_add_action_with_joypad_button("jump", JOY_BUTTON_A)
+	
+	_add_action_with_keys("attack", [KEY_J, KEY_Z])
+	_add_action_with_mouse("attack", MOUSE_BUTTON_LEFT)
+	_add_action_with_joypad_button("attack", JOY_BUTTON_X)
+	
+	_add_action_with_keys("special", [KEY_K, KEY_X])
+	_add_action_with_mouse("special", MOUSE_BUTTON_RIGHT)
+	_add_action_with_joypad_button("special", JOY_BUTTON_B)
+	
+	_add_action_with_keys("dodge", [KEY_SHIFT])
+	_add_action_with_joypad_button("dodge", JOY_BUTTON_Y)
+	
+	_add_action_with_keys("interact", [KEY_E])
+	_add_action_with_joypad_button("interact", JOY_BUTTON_A)
+
+
+## UI and System Actions
+func setup_ui_inputs() -> void:
+	_add_action_with_keys("pause", [KEY_ESCAPE, KEY_P])
+	_add_action_with_joypad_button("pause", JOY_BUTTON_START)
+	
+	_add_action_with_keys("toggle_fullscreen", [KEY_F11])
+	_add_action_with_keys("toggle_debug", [KEY_F3])
+	_add_action_with_keys("screenshot", [KEY_F12])
+
+
+## Helper functions
+func _add_action_with_keys(action: String, keys: Array) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	
+	for key in keys:
+		var event = InputEventKey.new()
+		event.keycode = key
+		InputMap.action_add_event(action, event)
+
+
+func _add_action_with_mouse(action: String, button: MouseButton) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	
+	var event = InputEventMouseButton.new()
+	event.button_index = button
+	InputMap.action_add_event(action, event)
+
+
+func _add_action_with_joypad_button(action: String, button: JoyButton) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	
+	var event = InputEventJoypadButton.new()
+	event.button_index = button
+	InputMap.action_add_event(action, event)
+
+
+func _add_action_with_joypad_axis(action: String, axis: JoyAxis, value: float) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	
+	var event = InputEventJoypadMotion.new()
+	event.axis = axis
+	event.axis_value = value
+	InputMap.action_add_event(action, event)
+
+
+# ============================================================================
+# MANUAL CONFIGURATION REFERENCE
+# ============================================================================
+# 
+# If you prefer to set up inputs manually in Project Settings > Input Map,
+# here's the recommended configuration:
+#
+# MOVEMENT:
+# - move_left: A, Left Arrow, D-pad Left, Left Stick Left
+# - move_right: D, Right Arrow, D-pad Right, Left Stick Right
+# - move_up: W, Up Arrow, D-pad Up, Left Stick Up
+# - move_down: S, Down Arrow, D-pad Down, Left Stick Down
+#
+# ACTIONS:
+# - jump: Space, W, Gamepad A
+# - attack: J, Z, Left Mouse, Gamepad X
+# - special: K, X, Right Mouse, Gamepad B
+# - dodge: Shift, Gamepad Y
+# - interact: E, Gamepad A
+#
+# UI/SYSTEM:
+# - pause: Escape, P, Gamepad Start
+# - ui_cancel: Escape (already exists in Godot)
+# - toggle_fullscreen: F11
+# - toggle_debug: F3
+# - screenshot: F12
+#
+# ============================================================================
