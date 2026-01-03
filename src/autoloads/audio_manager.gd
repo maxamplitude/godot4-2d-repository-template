@@ -39,6 +39,7 @@ var _current_playlist_index: int = -1
 
 
 func _ready() -> void:
+	await get_tree().process_frame
 	_setup_music_players()
 	_setup_sfx_pool()
 	_load_volumes_from_settings()

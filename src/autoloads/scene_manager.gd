@@ -33,6 +33,7 @@ var _skip_current_scene_cleanup: bool = false  # Flag to prevent freeing during 
 
 
 func _ready() -> void:
+	await get_tree().process_frame  # Let all autoloads initialize
 	_setup_transition_overlay()
 	_preload_scenes()
 	
@@ -176,7 +177,7 @@ func is_scene_preloaded(scene_path: String) -> bool:
 
 
 func _perform_scene_change(scene_path: String) -> void:
-	if _current_scene:
+	if _current_scene and not _skip_current_scene_cleanup:
 		_current_scene.queue_free()
 		scene_unloaded.emit(_current_scene.scene_file_path)
 
