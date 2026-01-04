@@ -170,19 +170,21 @@ func test_get_save_metadata():
 
 func test_save_completed_signal():
 	var signal_monitor = monitor_signals(save_manager)
+	var slot := {"value": 0}
 
-	save_manager.save_game(0, {"test": "signal"})
+	save_manager.save_game(slot.value, {"test": "signal"})
 
-	assert_signal(signal_monitor).is_emitted("save_completed")
+	assert_signal(signal_monitor).is_emitted("save_completed", [slot.value])
 
 
 func test_load_completed_signal():
-	save_manager.save_game(0, {"test": "signal"})
+	var slot := {"value": 0}
+	save_manager.save_game(slot.value, {"test": "signal"})
 	
 	var signal_monitor = monitor_signals(save_manager)
-	save_manager.load_game(0)
+	save_manager.load_game(slot.value)
 	
-	assert_signal(signal_monitor).is_emitted("load_completed")
+	assert_signal(signal_monitor).is_emitted("load_completed", [slot.value])
 
 
 func test_auto_save_slot():
