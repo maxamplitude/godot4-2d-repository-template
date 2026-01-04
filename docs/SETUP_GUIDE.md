@@ -2,17 +2,12 @@
 
 ## Installation
 
-1. Copy all `.gd` files from the `autoloads/` folder into your project at `res://src/autoloads/`
+1. Copy `game_services.gd` from the template into `res://src/autoloads/`
 
 2. Configure autoloads in **Project → Project Settings → Autoload**:
-   - Add `Constants` → `res://src/autoloads/constants.gd`
-   - Add `SettingsManager` → `res://src/autoloads/settings_manager.gd`
-   - Add `AudioManager` → `res://src/autoloads/audio_manager.gd`
-   - Add `SaveManager` → `res://src/autoloads/save_manager.gd`
-   - Add `SceneManager` → `res://src/autoloads/scene_manager.gd`
-   - Add `EventBus` → `res://src/autoloads/event_bus.gd`
-   - Add `GameManager` → `res://src/autoloads/game_manager.gd`
-   - Add `InputHelper` → `res://src/autoloads/input_helper.gd`
+   - Add `GameServices` → `res://src/autoloads/game_services.gd`
+
+   `GameServices` is the only required autoload. It owns the core managers: `EventBus` and `InputHelper` are created immediately, while `SettingsManager`, `AudioManager`, `SaveManager`, `SceneManager`, and `GameManager` are instantiated lazily in the correct dependency order. This keeps your project setup minimal while preserving all manager APIs via `GameServices.settings`, `GameServices.audio`, `GameServices.save`, `GameServices.scenes`, and `GameServices.game`.
 
    **Note:** Order matters! Constants and SettingsManager should load first since other managers depend on them.
 

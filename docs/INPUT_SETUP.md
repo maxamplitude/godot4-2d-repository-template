@@ -89,6 +89,10 @@ For a complete setup, also add these:
 
 ---
 
+### InputHelper (GameServices.input)
+
+`GameServices.input` depends on these action names for movement vectors, buffering, and combo detection. Use helpers like `GameServices.input.get_movement_vector()`, `GameServices.input.consume_buffered_action("jump")`, and `GameServices.input.check_combo_sequence(...)` so your gameplay code matches the template's input feel.
+
 ## Using default_input_map.gd
 
 Alternatively, you can use the reference script to set these up programmatically:
