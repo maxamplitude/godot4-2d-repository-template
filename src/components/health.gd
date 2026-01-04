@@ -16,11 +16,3 @@ func take_damage(amount: float):
 	if current_health <= 0:
 		died.emit()
 
-# src/components/hitbox_component.gd
-class_name HitboxComponent extends Area2D
-# Deals damage to hurtboxes
-
-# src/components/hurtbox_component.gd  
-class_name HurtboxComponent extends Area2D
-# Receives damage from hitboxes
-signal hit_received(damage: float, hitbox: HitboxComponent)

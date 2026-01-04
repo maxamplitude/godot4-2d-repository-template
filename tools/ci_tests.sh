@@ -13,7 +13,7 @@ USER_DATA_DIR="$BUILD_DIR/user_data"
 mkdir -p "$(dirname "$LOG_FILE")" "$USER_DATA_DIR"
 
 echo "Starting Godot Headless Tests..."
-"$(dirname "$0")/../addons/gdUnit4/runtest.sh" --headless -a res://src/tests --ignoreHeadlessMode
+"$(dirname "$0")/../addons/gdUnit4/runtest.sh" --headless -a res://src/tests --ignoreHeadlessMode #--verbose
 
 
 EXIT_CODE=$?

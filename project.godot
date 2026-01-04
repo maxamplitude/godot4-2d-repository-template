@@ -20,14 +20,7 @@ buses/default_bus_layout="uid://c1d601b5wrpco"
 
 [autoload]
 
-AudioManager="*res://src/autoloads/audio_manager.gd"
-EventBus="*res://src/autoloads/event_bus.gd"
-SaveManager="*res://src/autoloads/save_manager.gd"
-SceneManager="*res://src/autoloads/scene_manager.gd"
-SettingsManager="*res://src/autoloads/settings_manager.gd"
-Constants="*res://src/autoloads/constants.gd"
-InputHelper="*res://src/autoloads/input_helper.gd"
-GameManager="*res://src/autoloads/game_manager.gd"
+GameServices="*res://src/autoloads/game_services.gd"
 
 [editor_plugins]
 
@@ -36,6 +29,10 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 [gdunit]
 
 test_root="res://src/tests"
+
+[gdunit4]
+
+settings/test/test_lookup_folder="tests"
 
 [input]
 
