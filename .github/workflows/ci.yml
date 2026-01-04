@@ -32,6 +32,10 @@ jobs:
           sudo mv "${EXE_FILE}" /usr/local/bin/godot
           rm -f "$GODOT_ZIP"
 
+      - name: Import Godot project
+        run: |
+          godot --headless --import --quit
+
       - name: Run gdUnit tests
         run: |
           chmod +x ./tools/ci_tests.sh
