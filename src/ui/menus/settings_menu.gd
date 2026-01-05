@@ -20,6 +20,8 @@ extends Control
 # Controls tab
 @onready var controls_container: VBoxContainer = %ControlsContainer
 
+var _ui_click_stream: AudioStream = load(GameConstants.SFX_UI_CLICK)
+
 
 func _ready() -> void:
 	# Set process mode to always so it works when paused
@@ -39,13 +41,18 @@ func _ready() -> void:
 
 
 func _setup_display_options() -> void:
+	var settings = GameServices.settings
+	if not settings:
+		push_error("SettingsMenu: SettingsManager unavailable")
+		return
+
 	# Window mode
 	window_mode_option.clear()
 	window_mode_option.add_item("Windowed", 0)
 	window_mode_option.add_item("Fullscreen", 1)
 	window_mode_option.add_item("Borderless", 2)
 	
-	var current_window_mode = SettingsManager.get_setting("display", "window_mode", 0)
+	var current_window_mode = settings.get_setting("display", "window_mode", 0)
 	window_mode_option.selected = current_window_mode
 	window_mode_option.item_selected.connect(_on_window_mode_changed)
 	
@@ -55,7 +62,7 @@ func _setup_display_options() -> void:
 	vsync_option.add_item("Enabled", 1)
 	vsync_option.add_item("Adaptive", 2)
 	
-	var current_vsync = SettingsManager.get_setting("display", "vsync_mode", 1)
+	var current_vsync = settings.get_setting("display", "vsync_mode", 1)
 	vsync_option.selected = current_vsync
 	vsync_option.item_selected.connect(_on_vsync_changed)
 	
@@ -66,7 +73,7 @@ func _setup_display_options() -> void:
 	resolution_option.add_item("2560x1440", 2)
 	resolution_option.add_item("3840x2160", 3)
 	
-	var current_width = SettingsManager.get_setting("display", "resolution_width", 1920)
+	var current_width = settings.get_setting("display", "resolution_width", 1920)
 	match current_width:
 		1280: resolution_option.selected = 0
 		1920: resolution_option.selected = 1
@@ -77,6 +84,11 @@ func _setup_display_options() -> void:
 
 
 func _setup_controls_list() -> void:
+	var settings = GameServices.settings
+	if not settings:
+		push_error("SettingsMenu: SettingsManager unavailable")
+		return
+
 	# Clear existing controls
 	for child in controls_container.get_children():
 		child.queue_free()
@@ -93,7 +105,7 @@ func _setup_controls_list() -> void:
 			label.custom_minimum_size = Vector2(150, 0)
 			hbox.add_child(label)
 			
-			var current_binding = SettingsManager.get_input_binding(action)
+			var current_binding = settings.get_input_binding(action)
 			var binding_label = Label.new()
 			binding_label.text = _get_binding_text(current_binding)
 			binding_label.custom_minimum_size = Vector2(100, 0)
@@ -127,16 +139,28 @@ func _get_binding_text(event: InputEvent) -> String:
 
 
 func _on_window_mode_changed(index: int) -> void:
-	SettingsManager.set_setting("display", "window_mode", index)
-	SettingsManager.apply_display_settings()
+	var settings = GameServices.settings
+	if not settings:
+		return
+
+	settings.set_setting("display", "window_mode", index)
+	settings.apply_display_settings()
 
 
 func _on_vsync_changed(index: int) -> void:
-	SettingsManager.set_setting("display", "vsync_mode", index)
-	SettingsManager.apply_display_settings()
+	var settings = GameServices.settings
+	if not settings:
+		return
+
+	settings.set_setting("display", "vsync_mode", index)
+	settings.apply_display_settings()
 
 
 func _on_resolution_changed(index: int) -> void:
+	var settings = GameServices.settings
+	if not settings:
+		return
+
 	var resolutions = [
 		Vector2i(1280, 720),
 		Vector2i(1920, 1080),
@@ -145,25 +169,33 @@ func _on_resolution_changed(index: int) -> void:
 	]
 	
 	var resolution = resolutions[index]
-	SettingsManager.set_setting("display", "resolution_width", resolution.x)
-	SettingsManager.set_setting("display", "resolution_height", resolution.y)
-	SettingsManager.apply_display_settings()
+	settings.set_setting("display", "resolution_width", resolution.x)
+	settings.set_setting("display", "resolution_height", resolution.y)
+	settings.apply_display_settings()
 
 
 func _on_rebind_pressed(action: String, binding_label: Label) -> void:
+	var settings = GameServices.settings
+	if not settings:
+		return
+
 	binding_label.text = "Press key..."
 	
 	# Wait for next input
 	var event = await _wait_for_input()
 	
 	if event:
-		SettingsManager.rebind_input(action, event)
+		settings.rebind_input(action, event)
 		binding_label.text = _get_binding_text(event)
 
 
 func _on_reset_binding_pressed(action: String, binding_label: Label) -> void:
-	SettingsManager.reset_input_action(action)
-	var current_binding = SettingsManager.get_input_binding(action)
+	var settings = GameServices.settings
+	if not settings:
+		return
+
+	settings.reset_input_action(action)
+	var current_binding = settings.get_input_binding(action)
 	binding_label.text = _get_binding_text(current_binding)
 
 
@@ -182,10 +214,19 @@ func _wait_for_input() -> InputEvent:
 
 
 func _on_back_pressed() -> void:
-	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
-		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
+	_play_ui_click()
 	
 	# Apply all settings before closing
-	SettingsManager.apply_all_settings()
-	
-	SceneManager.pop_scene()
+	var settings = GameServices.settings
+	if settings:
+		settings.apply_all_settings()
+
+	GameServices.scenes.pop_scene()
+
+
+func _play_ui_click() -> void:
+	var audio = GameServices.audio
+	if not audio or not _ui_click_stream:
+		return
+
+	audio.play_sfx(_ui_click_stream)

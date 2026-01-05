@@ -12,6 +12,7 @@ class_name AudioSlider
 @onready var slider: HSlider = %Slider
 @onready var value_label: Label = %ValueLabel
 
+var _ui_click_stream: AudioStream = load(GameConstants.SFX_UI_CLICK)
 
 func _ready() -> void:
 	# Set up slider
@@ -19,34 +20,41 @@ func _ready() -> void:
 	slider.max_value = 1.0
 	slider.step = 0.01
 	slider.value_changed.connect(_on_slider_value_changed)
-	
+
 	_update_label()
 	_load_volume()
-
 
 func _update_label() -> void:
 	if label:
 		label.text = bus_name + ":"
 
-
 func _load_volume() -> void:
-	if not AudioManager or not slider:
+	var audio = GameServices.audio
+	if not audio or not slider:
 		return
-	
-	var volume = AudioManager.get_bus_volume(bus_name)
+
+	var volume = audio.get_bus_volume(bus_name)
 	slider.value = volume
 	_update_value_label(volume)
 
-
 func _on_slider_value_changed(value: float) -> void:
-	AudioManager.set_bus_volume(bus_name, value)
-	_update_value_label(value)
-	
-	# Play a quick sound when adjusting SFX volume
-	if bus_name == "SFX":
-		if ResourceLoader.exists(Constants.SFX_UI_CLICK):
-			AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
+	var audio = GameServices.audio
+	if audio:
+		audio.set_bus_volume(bus_name, value)
 
+	_update_value_label(value)
+	_play_adjust_sound()
+
+func _play_adjust_sound() -> void:
+	if bus_name != "SFX":
+		return
+
+	var audio = GameServices.audio
+	if not audio:
+		return
+
+	if _ui_click_stream:
+		audio.play_sfx(_ui_click_stream)
 
 func _update_value_label(value: float) -> void:
 	if value_label:

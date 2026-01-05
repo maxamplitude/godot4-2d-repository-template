@@ -13,14 +13,10 @@ extends Node2D
 
 
 func _ready():
+	await get_tree().process_frame
 	# Set version in corner
 	var version = ProjectSettings.get_setting("application/config/version", "1.0.0")
 	version_label.text = "v" + version
-	
-	# Connect to debug toggle event
-	GameServices.events.register_custom_event("debug_toggled")
-	GameServices.events.connect("debug_toggled", _on_debug_toggled)
-	
 	# Set initial game state
 	GameServices.game.set_state(GameConstants.GameState.MENU)
 	
@@ -30,10 +26,6 @@ func _ready():
 func _process(_delta):
 	if debug_overlay.visible:
 		_update_debug_overlay()
-
-
-func _on_debug_toggled(_data: Dictionary):
-	debug_overlay.visible = not debug_overlay.visible
 
 
 func _update_debug_overlay():

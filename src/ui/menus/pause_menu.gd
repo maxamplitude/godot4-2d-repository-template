@@ -9,6 +9,8 @@ extends Control
 @onready var settings_button: Button = %SettingsButton
 @onready var main_menu_button: Button = %MainMenuButton
 
+var _ui_click_stream: AudioStream = load(GameConstants.SFX_UI_CLICK)
+
 
 func _ready() -> void:
 	# Connect button signals
@@ -24,25 +26,30 @@ func _ready() -> void:
 
 
 func _on_resume_pressed() -> void:
-	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
-		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
-	
-	SceneManager.pop_scene(transition)
-	GameManager.resume_game()
+	_play_ui_click()
+
+	GameServices.scenes.pop_scene(transition)
+	GameServices.game.resume_game()
 
 
 func _on_settings_pressed() -> void:
-	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
-		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
-	
+	_play_ui_click()
+
 	# Push settings menu on top of pause menu
-	SceneManager.push_scene(Constants.SCENE_SETTINGS_MENU)
+	GameServices.scenes.push_scene(GameConstants.SCENE_SETTINGS_MENU)
 
 
 func _on_main_menu_pressed() -> void:
-	if ResourceLoader.exists(Constants.SFX_UI_CLICK):
-		AudioManager.play_sfx(preload(Constants.SFX_UI_CLICK))
-	
+	_play_ui_click()
+
 	# Pop pause menu and return to main menu
-	SceneManager.pop_scene(null)  # Remove pause menu instantly
-	GameManager.return_to_menu()
+	GameServices.scenes.pop_scene(null)  # Remove pause menu instantly
+	GameServices.game.return_to_menu()
+
+
+func _play_ui_click() -> void:
+	var audio = GameServices.audio
+	if not audio or not _ui_click_stream:
+		return
+
+	audio.play_sfx(_ui_click_stream)

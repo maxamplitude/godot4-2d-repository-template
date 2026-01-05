@@ -3,6 +3,8 @@ extends Control
 ##
 ## Entry point for the game with Play, Settings, and Quit options
 
+var _ui_click_stream: AudioStream = load(GameConstants.SFX_UI_CLICK)
+
 @export_file("*.tscn") var first_level_scene: String = "res://scenes/level_1.tscn"
 @export var transition: SceneTransition = null
 
@@ -28,9 +30,8 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	if ResourceLoader.exists(GameConstants.SFX_UI_CLICK):
-		GameServices.audio.play_sfx(preload(GameConstants.SFX_UI_CLICK))
-	
+	_play_ui_click()
+
 	if not first_level_scene.is_empty():
 		GameServices.scenes.change_scene(first_level_scene, transition)
 	else:
@@ -38,14 +39,17 @@ func _on_play_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	if ResourceLoader.exists(GameConstants.SFX_UI_CLICK):
-		GameServices.audio.play_sfx(preload(GameConstants.SFX_UI_CLICK))
-	
+	_play_ui_click()
+
 	GameServices.scenes.push_scene(GameConstants.SCENE_SETTINGS_MENU)
 
 
 func _on_quit_pressed() -> void:
-	if ResourceLoader.exists(GameConstants.SFX_UI_CLICK):
-		GameServices.audio.play_sfx(preload(GameConstants.SFX_UI_CLICK))
-	
+	_play_ui_click()
+
 	get_tree().quit()
+
+func _play_ui_click() -> void:
+	var audio = GameServices.audio
+	if audio and _ui_click_stream:
+		audio.play_sfx(_ui_click_stream)
